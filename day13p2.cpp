@@ -52,8 +52,11 @@ int main()
     pos = next+1;
   }
 
-  pair<LL, LL> crtRes = crt(r, m);      //! This is a function to solve Chinese Remainder Theorem equation
+  //! This is a function to solve Chinese Remainder Theorem equation
+  //! See also: https://atcoder.github.io/ac-library/production/document_en/math.html
+  pair<LL, LL> crtRes = crt(r, m);
   cout << crtRes.S - crtRes.F << endl;
+
 
   return 0;
 }
