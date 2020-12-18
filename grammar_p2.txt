@@ -1,0 +1,10 @@
+start: expression
+expression: term
+    | term "*" expression  -> mul
+term: factor
+    | factor "+" term      -> add
+factor: NUMBER -> number
+    | "(" expression ")"   -> par
+%import common.INT         -> NUMBER
+%import common.WS
+%ignore WS
