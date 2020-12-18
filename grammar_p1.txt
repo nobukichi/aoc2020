@@ -2,7 +2,7 @@ start: expression
 expression: factor
     | expression "*" factor    -> mul
     | expression "+" factor    -> add
-factor: NUMBER -> number
+factor: NUMBER                 -> number
     | "(" expression ")"       -> par
 %import common.INT             -> NUMBER
 %import common.WS
