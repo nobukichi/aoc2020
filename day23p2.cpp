@@ -31,8 +31,8 @@ const int MOD = 1000000007;
 //! represent the sequence with a doubly linked list
 struct Node {
   int val;
-  Node* prev;
-  Node* next;
+  int prev;
+  int next;
 };
 
 
@@ -53,16 +53,12 @@ int main()
   int mx = s.length();
   rep(i, mx) {
     int curr = s[i]-'0';
-    int prev = (i == 0 ? SEQ_LEN : s[i-1]-'0');
-    int next = (i == mx-1 ? mx+1 : s[i+1]-'0');
-    node[curr].prev = &node[prev];
-    node[curr].next = &node[next];
+    node[curr].prev = (i == 0 ? SEQ_LEN : s[i-1]-'0');
+    node[curr].next = (i == mx-1 ? mx+1 : s[i+1]-'0');
   }
   repr(curr, mx+1, SEQ_LEN) {
-    int prev = (curr == mx+1 ? s[mx-1]-'0' : curr-1);
-    int next = (curr == SEQ_LEN ? s[0]-'0' : curr+1);
-    node[curr].prev = &node[prev];
-    node[curr].next = &node[next];
+    node[curr].prev = (curr == mx+1 ? s[mx-1]-'0' : curr-1);
+    node[curr].next = (curr == SEQ_LEN ? s[0]-'0' : curr+1);
   }
 
   //! Run the simulation
@@ -70,10 +66,10 @@ int main()
   int curr = s[0]-'0';
   rep(i, ITERATION) {
     //! choose the pickedup nodes and the next current
-    int p = node[curr].next->val;
+    int p = node[curr].next;
     rep(j, 3) {
       pickedup[j] = p;
-      p = node[p].next->val;
+      p = node[p].next;
     }
     int nextCurr = p;
 
@@ -82,21 +78,21 @@ int main()
     while (find(pickedup.begin(), pickedup.end(), dest) != pickedup.end()) {
       dest = (dest == 1 ? SEQ_LEN : dest-1);
     }
-    int postDest = node[dest].next->val;
+    int postDest = node[dest].next;
 
     //! update the links
-    node[curr].next = &node[nextCurr];
-    node[nextCurr].prev = &node[curr];
-    node[pickedup[0]].prev = &node[dest];
-    node[dest].next = &node[pickedup[0]];
-    node[pickedup[2]].next = &node[postDest];
-    node[postDest].prev = &node[pickedup[2]];
+    node[curr].next = nextCurr;
+    node[nextCurr].prev = curr;
+    node[pickedup[0]].prev = dest;
+    node[dest].next = pickedup[0];
+    node[pickedup[2]].next = postDest;
+    node[postDest].prev = pickedup[2];
 
     curr = nextCurr;
   }
 
-  LL star1 = node[1].next->val;
-  LL star2 = node[star1].next->val;
+  LL star1 = node[1].next;
+  LL star2 = node[star1].next;
   cout << star1 << ' ' << star2 << ' ' << star1*star2 << endl;
 
   return 0;
